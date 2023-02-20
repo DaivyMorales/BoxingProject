@@ -1,6 +1,7 @@
 package com.example.boxingproject.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
@@ -8,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.boxingproject.presentation.interactive.MenuScreen
 import com.example.boxingproject.presentation.interactive.PagoScreen
+import com.example.boxingproject.presentation.interactive.Principal
 import com.example.boxingproject.presentation.login.LoginScreen
 import com.example.boxingproject.presentation.login.LoginViewModel
 import com.example.boxingproject.presentation.screens.RegistrationScreen
@@ -21,6 +23,15 @@ fun AppNavigation() {
 
         composable(route = AppNav.LoginScreen.route) {
             val viewModel = LoginViewModel()
+            if( viewModel.state.value.successLogin ){
+                LaunchedEffect(key1 = Unit){
+                    navController.navigate(AppNav.MenuScreen.route){
+                        popUpTo(AppNav.LoginScreen.route){
+                            inclusive = true
+                        }
+                    }
+                }
+            }else{
             LoginScreen(
                 navController,
                 state = viewModel.state.value,
@@ -31,6 +42,9 @@ fun AppNavigation() {
                 }
             )
         }
+
+
+        }
         composable(route = AppNav.RegistrationScreen.route) {
             RegistrationScreen(navController)
         }
@@ -39,6 +53,10 @@ fun AppNavigation() {
         }
         composable(route = AppNav.PagoScreen.route) {
             PagoScreen(navController)
+        }
+
+        composable(route = AppNav.Principal.route) {
+            Principal(navController)
         }
 
     }
