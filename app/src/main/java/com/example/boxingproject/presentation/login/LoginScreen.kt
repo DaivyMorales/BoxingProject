@@ -164,7 +164,7 @@ fun LoginScreen(
                             )
                             Text(
                                 modifier = Modifier.fillMaxWidth(),
-                                text = "Forgot Password",
+                                text = "Forgot Passworddd",
                                 style = MaterialTheme.typography.body1,
                                 textAlign = TextAlign.End
                             )
