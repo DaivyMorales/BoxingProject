@@ -1,0 +1,31 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color purple_200
+color purple_500
+color purple_700
+color teal_200
+color teal_700
+color white
+drawable guante1
+drawable guante2
+drawable guante3
+drawable guante4
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable ippo
+drawable user
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string error_incorrectly_repeated_password
+string error_input_empty
+string error_invalid_credentials
+string error_not_e_valid_email
+string error_not_e_valid_phone_number
+string error_unkown_
+string success_login
+string success_registration
+style Theme.BoxingProject
+xml backup_rules
+xml data_extraction_rules

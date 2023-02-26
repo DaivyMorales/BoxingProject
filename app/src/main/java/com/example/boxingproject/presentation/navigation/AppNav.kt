@@ -3,22 +3,20 @@ package com.example.boxingproject.presentation.navigation
 import androidx.navigation.NamedNavArgument
 
 sealed class AppNav(
-    val route: String,
-    //val arguments : List<NamedNavArgument>
+    val route: String
     ) {
-    object LoginScreen : AppNav(route = "LoginScreen") {
-        fun crearRouteNueva(nombre: String) : String{
-            return "LoginScreen/$nombre"
-        }
-
-    }
-
-    object Principal : AppNav(route = "Home"){
-        fun mostrarCuentaNueva(nombre: String) : String {
-            return "Ho"
+    object LoginScreen : AppNav(route = "LoginScreen/{nameValue}") {
+        fun crearRouteNueva(nameValue: String) : String{
+            return "LoginScreen/$nameValue"
         }
     }
-    object RegistrationScreen : AppNav(route = "Registration", /*emptyList()*/)
-    object PagoScreen : AppNav(route = "PagoScreen", /*emptyList()*/)
-    object MenuScreen : AppNav(route = "MenuScreen", /*emptyList()*/)
+    object RegistrationScreen : AppNav(route = "RegistrationScreen")
+    object PagoScreen : AppNav(route = "PagoScreen")
+    object MenuScreen : AppNav(route = "MenuScreen")
+
+    object HomeScreen : AppNav("HomeScreen/{user}"){
+        fun createRoute(user : String) : String {
+            return "HomeScreen/$user"
+        }
+    }
 }

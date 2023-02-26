@@ -42,14 +42,16 @@ import com.example.boxingproject.presentation.components.EvenDialog
 import com.example.boxingproject.presentation.components.RoundedButtom
 import com.example.boxingproject.presentation.components.TransparentTextField
 import com.example.boxingproject.presentation.navigation.AppNav
+import kotlin.reflect.KFunction
+import kotlin.reflect.KFunction0
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     state : LoginState,
-    onLogin : (user: String, password:String) -> Unit,
+    onLogin : (dato1: String, dato2:String) -> Unit,
     onNavigateToRegister : ()-> Unit,
-    onDissmissDialog : ()->Unit
+    onDissmissDialog : KFunction0<Unit>,
 ){
     val emailValue = rememberSaveable {
         mutableStateOf("")
@@ -76,7 +78,7 @@ fun LoginScreen(
         contentScale =  ContentScale.Inside
     )
         Box( modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.BottomCenter
         ){
             ConstraintLayout {
                 val (surface, fab) = createRefs()
@@ -176,38 +178,63 @@ fun LoginScreen(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
 
-                            RoundedButtom(text = "Login", displayProgressBar = state.displayProgressBar, onClick = {
-                                navController.navigate(route = AppNav.RegistrationScreen.route)
-                            })
-                        }
-
-                        ClickableText(
-                            modifier = Modifier.clickable {
-                                navController.navigate(route = AppNav.RegistrationScreen.route)
-                            },
-                            text = buildAnnotatedString {
-                                append("No tienen una cuenta activa")
-                                withStyle(
+                            RoundedButtom(
+                                text = "Loginnn",
+                                displayProgressBar = state.displayProgressBar,
+                                onClick = {
+                                    val datos = listOf(
+                                        LoginState(
+                                            emailValue.value, passwordValue.value,
+                                            false, false, null
+                                        )
+                                    )
+                                    onLogin(emailValue.value, passwordValue.value)
+                                })
+                            ClickableText(
+                                text = buildAnnotatedString {
+                                    append("No tienes una cuenta activa")
+                                    withStyle(
                                         style = SpanStyle(
-                                        color = MaterialTheme.colors.primary,
-                                        fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colors.primary,
+                                            fontWeight = FontWeight.Bold,
                                         ),
+                                    ){
+                                        append("Sign Up")
+                                    }
+                                },
+
                                 ){
-                                    append("Sign Up")
-                                }
-                            },
-                            onClick = {
                                 onNavigateToRegister()
                             }
-                        )
+
+                        }
+
+
                     }
 
                 }
 
+                FloatingActionButton(
+                    modifier = Modifier
+                        .size(72.dp)
+                        .constrainAs(fab) {
+                            top.linkTo(surface.top, margin = (-36).dp)
+                            end.linkTo(surface.end, margin = 36.dp)
+                        },
+                    backgroundColor = MaterialTheme.colors.primary,
+                    onClick = {
+                        onLogin(emailValue.value, passwordValue.value)
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(72.dp),
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = "Boton de avanzar",
+                        tint = Color.White
+                    )
+                }
+
             }
-
-
-
 
 
         }

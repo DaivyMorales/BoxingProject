@@ -29,13 +29,20 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.boxingproject.presentation.components.EvenDialog
 import com.example.boxingproject.presentation.components.RoundedButtom
 import com.example.boxingproject.presentation.components.SocialMediaButton
 import com.example.boxingproject.presentation.components.TransparentTextField
 import com.example.boxingproject.presentation.navigation.AppNav
 
 @Composable
-fun RegistrationScreen( navController: NavController ){
+fun RegistrationScreen(
+    navController: NavController,
+    state: RegisterState,
+    onRegister: (nameValue: String, emailValue: String, phoneValue: String, passValue: String, confirmPassValue: String) -> Unit,
+    onBack: ()-> Unit,
+    onDismissDialog: ()->Unit
+){
 
     val nameValue = remember {
         mutableStateOf("")
@@ -121,6 +128,7 @@ fun RegistrationScreen( navController: NavController ){
                 TransparentTextField(  //Text telefono
                     textFieldValue = phoneValue,
                     textLabel = "Telefono",
+                    maxChar = 10,
                     keyboardType = KeyboardType.Phone,
                     keyboardActions = KeyboardActions(
                         onNext = {
@@ -156,7 +164,19 @@ fun RegistrationScreen( navController: NavController ){
 
 
                 Spacer(modifier = Modifier.height(16.dp) ) //Espacio
-                RoundedButtom(text = "Sign Up", onClick = { navController.navigate(route = AppNav.MenuScreen.route) })  //Boton de Sign Up
+                RoundedButtom(
+                    text = "Sign Up",
+                    displayProgressBar = false,
+                    onClick = {
+                        onRegister(
+                            nameValue.value,
+                            emailValue.value,
+                            phoneValue.value,
+                            passValue.value,
+                            confirmPassValue.value
+                        )
+                    }
+                )  //Boton de Sign Up
                 ClickableText(
                     text = buildAnnotatedString {
                         append("Already have a Account")
@@ -169,7 +189,7 @@ fun RegistrationScreen( navController: NavController ){
                             append("Log In")
                         }
                     } , onClick = {
-                        //TODO{Login Screen}
+                        navController.navigate(AppNav.LoginScreen.route)
                     }
                 )
             }
@@ -213,7 +233,8 @@ fun RegistrationScreen( navController: NavController ){
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            )
+            {
                 //TODO { Creamos un nuevo Componente para los botones. }
                 SocialMediaButton(
                     text = "Login With Facebook",
@@ -228,5 +249,13 @@ fun RegistrationScreen( navController: NavController ){
                 )
             }
         }
+
+        if (state.errorMessages != null) {
+            EvenDialog(
+                errorMessages = state.errorMessages,
+                onDismiss = onDismissDialog
+            )
+        }
+
     }
 }
